@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS sysinfo;
+
+USE sysinfo;
+
+CREATE TABLE IF NOT EXISTS usage_stats (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+  cpu FLOAT,
+  memory FLOAT,
+  uptime FLOAT
+);

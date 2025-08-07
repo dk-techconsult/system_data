@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  mysql-server:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - system_monitor_network
+
+  monitor-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: monitor-app
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: mysql-server
+      DB_USER: root
+      DB_PASSWORD: example
+      DB_NAME: sysinfo
+    volumes:
+      - ./app/logs:/app/logs
+    depends_on:
+      - mysql-server
+    networks:
+      - system_monitor_network
+
+volumes:
+  mysql_data:
+
+networks:
+  system_monitor_network:
+    driver: bridge
